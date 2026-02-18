@@ -1,6 +1,6 @@
 .page-content {
   padding: 25px 40px;
-  background: white;
+  /* background: white; */
   border-radius: 8px;
   min-height: calc(100vh - 80px);
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);

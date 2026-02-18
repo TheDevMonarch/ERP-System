@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./Reports.css";
 
-const reportTypes = ["Attendance", "Enrollment", "Financial", "Performance", "Custom"];
+const reportTypes = [
+  "Attendance",
+  "Enrollment",
+  "Financial",
+  "Performance",
+  "Custom",
+];
 
 const Reports = () => {
   const [selectedReport, setSelectedReport] = useState(reportTypes[0]);
@@ -11,18 +17,6 @@ const Reports = () => {
   const [reportData, setReportData] = useState(null);
   const [error, setError] = useState(null);
 
-  const handleReportChange = (e) => {
-    setSelectedReport(e.target.value);
-    setReportData(null);
-    setError(null);
-  };
-
-  const handleDateChange = (e) => {
-    setDateRange({ ...dateRange, [e.target.name]: e.target.value });
-    setReportData(null);
-    setError(null);
-  };
-
   const handleGenerate = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -30,11 +24,14 @@ const Reports = () => {
     setReportData(null);
 
     try {
-      const response = await axios.post("https://backenderp-production-6374.up.railway.app/api/admin/reports", {
-        type: selectedReport,
-        from: dateRange.from,
-        to: dateRange.to,
-      });
+      const response = await axios.post(
+        "https://backenderp-production-6374.up.railway.app/api/admin/reports",
+        {
+          type: selectedReport,
+          from: dateRange.from,
+          to: dateRange.to,
+        }
+      );
       setReportData(response.data);
     } catch (err) {
       setError("Failed to generate report. Please try again.");
@@ -44,46 +41,77 @@ const Reports = () => {
   };
 
   return (
-    <div className="page-content">
-      <h1>Reports & Analytics</h1>
-      <form className="report-form" onSubmit={handleGenerate}>
-        <label>
-          Select Report Type:
-          <select value={selectedReport} onChange={handleReportChange}>
-            {reportTypes.map((type) => (
-              <option key={type} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label>
-          From:
-          <input type="date" name="from" value={dateRange.from} onChange={handleDateChange} required />
-        </label>
-
-        <label>
-          To:
-          <input type="date" name="to" value={dateRange.to} onChange={handleDateChange} required />
-        </label>
-
-        <button type="submit" className="generate-btn" disabled={loading}>
-          {loading ? "Generating..." : "Generate Report"}
-        </button>
-      </form>
-
-      <section className="report-placeholder">
-        {error && <p className="error-msg">{error}</p>}
-        {reportData ? (
-          <pre>{JSON.stringify(reportData, null, 2)}</pre>
-        ) : (
+    <div className="reports-page">
+      <div className="reports-container">
+        {/* Header */}
+        <div className="reports-header">
+          <h1>Reports & Analytics</h1>
           <p>
-            Generated reports will appear here once implemented.
-            Use the form above to select report type and date range.
+            Generate insights by selecting report type and date range.
           </p>
-        )}
-      </section>
+        </div>
+
+        {/* Form */}
+        <form className="report-form" onSubmit={handleGenerate}>
+          <div className="form-group">
+            <label>Report Type</label>
+            <select
+              value={selectedReport}
+              onChange={(e) => setSelectedReport(e.target.value)}
+            >
+              {reportTypes.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label>From</label>
+            <input
+              type="date"
+              name="from"
+              value={dateRange.from}
+              onChange={(e) =>
+                setDateRange({ ...dateRange, from: e.target.value })
+              }
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>To</label>
+            <input
+              type="date"
+              name="to"
+              value={dateRange.to}
+              onChange={(e) =>
+                setDateRange({ ...dateRange, to: e.target.value })
+              }
+              required
+            />
+          </div>
+
+          <button type="submit" disabled={loading}>
+            {loading ? "Generating..." : "Generate Report"}
+          </button>
+        </form>
+
+        {/* Output */}
+        <div className="report-output">
+          {error && <p className="error-msg">{error}</p>}
+
+          {reportData ? (
+            <pre>{JSON.stringify(reportData, null, 2)}</pre>
+          ) : (
+            <p className="placeholder-text">
+              Generated reports will appear here once implemented.
+              Use the form above to select report type and date range.
+            </p>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

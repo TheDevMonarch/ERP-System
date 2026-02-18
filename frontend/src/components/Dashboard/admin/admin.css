@@ -1,309 +1,261 @@
-/* Dashboard wrapper with fixed sidebar and content */
-.dashboard-wrapper {
+/* =========================
+   GLOBAL ADMIN LAYOUT
+========================= */
+
+.dashboard-layout {
   display: flex;
   height: 100vh;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f9fafb;
+  background: linear-gradient(180deg, #0b1220, #070b15);
+  color: #e5e7eb;
 }
 
-/* Main content area to the right of sidebar */
-.dashboard-content {
-  flex-grow: 1;
-  padding: 20px 12px !important;  /* PERFECT WIDE LIKE SCREENSHOT */
-  overflow-y: auto;
-  background-color: #f3f4f6;
-  min-height: 100vh;
+.dashboard-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
 }
 
-/* Header styles for dashboard pages */
+/* =========================
+   TOP BAR
+========================= */
+
+.dashboard-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.02)
+  );
+  backdrop-filter: blur(14px);
+}
+
+.topbar-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #f9fafb;
+}
+
+.topbar-subtitle {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+/* =========================
+   MAIN CONTENT AREA
+========================= */
+
+.dashboard-content {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+  background: transparent;
+  min-height: 100vh;
+}
+
+/* =========================
+   PAGE HEADERS
+========================= */
+
+.dashboard-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  gap: 16px;
 }
 
-.dashboard-header h1 {
+.dashboard-title {
+  font-size: 1.6rem;
   font-weight: 700;
-  color: #1f2937;
-  font-size: 2rem;
+  color: #f9fafb;
 }
+
+.dashboard-subtitle {
+  font-size: 0.95rem;
+  color: #9ca3af;
+}
+
+/* =========================
+   SEARCH INPUT
+========================= */
 
 .search-input {
-  padding: 20px;
-  margin: 10px;
+  padding: 10px 14px;
   width: 280px;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: #e5e7eb;
+  outline: none;
 }
 
-/* Widgets section styles */
+.search-input::placeholder {
+  color: #9ca3af;
+}
+
+.search-input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+}
+
+/* =========================
+   WIDGET / DASHBOARD CARDS
+========================= */
+
 .widgets-section {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
-  gap: 30px;
-  margin-bottom: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
 }
 
 .widget-card {
-  background-color: white;
-  padding: 20px 10px;
-  border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.07);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.03)
+  );
+  border-radius: 18px;
+  padding: 22px;
+  color: #e5e7eb;
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 16px;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.widget-icon {
-  font-size: 30px;
-  padding: 13px;
-  border-radius: 30%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.widget-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.6);
 }
 
 .widget-info h3 {
-  margin: 0 0 6px 0;
+  margin: 0;
   font-size: 1.8rem;
-  color: #111827;
+  font-weight: 700;
 }
 
 .widget-info p {
-  margin: 0;
-  font-weight: 600;
-  font-size: 1rem;
-  color: #6b7280;
+  margin: 4px 0 0 0;
+  font-size: 0.9rem;
+  color: #c7d2fe;
 }
 
-/* IMMERSION SMALL FONT TABLES - ALL ADMIN PAGES */
+/* =========================
+   GLASS CARD (REUSABLE)
+========================= */
+
+.admin-card,
+.reports-container,
 .imm-admin-page,
 .institutes-table-section {
-  padding: 16px 16px !important;  /* PERFECT SCREENSHOT PADDING */
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.08);
-  font-size: 0.88rem;
-  color: #333;
-  margin: 0 !important;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.03)
+  );
+  border-radius: 18px;
+  padding: 28px;
+  color: #e5e7eb;
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
 }
 
-.imm-admin-page h1,
-.institutes-table-section h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #3f51b5;
-  margin-bottom: 14px;
-}
+/* =========================
+   TABLES (DARK MODE)
+========================= */
 
-.imm-admin-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  gap: 10px;
-}
-
-.imm-admin-search {
-  width: 240px;
-  padding: 6px 9px;
-  border-radius: 5px;
-  border: 1px solid #c0c0c0;
-  font-size: 0.8rem;
-}
-
-.imm-admin-add-btn {
-  background: #3f51b5;
-  color: white;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 5px;
-  font-weight: 600;
-  font-size: 0.82rem;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.imm-admin-add-btn:hover {
-  background: #303f9f;
-}
-
-.imm-admin-add-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 16px;
-  padding: 12px;
-  background: #f8f9ff;
-  border-radius: 6px;
-  border: 1px solid #e1e5e9;
-}
-
-.imm-admin-input, 
-.imm-admin-edit-input, 
-.imm-admin-edit-select {
-  padding: 6px 8px;
-  border-radius: 4px;
-  border: 1px solid #c0c0c0;
-  font-size: 0.8rem;
-  flex: 1;
-  min-width: 110px;
-  box-sizing: border-box;
-}
-
-.imm-admin-submit-btn, 
-.imm-admin-save-btn {
-  background: #009688;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 5px;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 0.82rem;
-}
-
-.imm-admin-submit-btn:hover, 
-.imm-admin-save-btn:hover {
-  background: #00796b;
-}
-
-.imm-admin-cancel-btn {
-  background: #999;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 5px;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 0.82rem;
-  margin-left: 4px;
-}
-
-.imm-admin-cancel-btn:hover {
-  background: #777;
-}
-
-/* PERFECT SCREENSHOT TABLE - EXACT FONT SIZE */
 .imm-admin-table,
 .institutes-table {
-  width: 100% !important;
-  border-collapse: collapse !important;
-  font-size: 0.74rem !important;  /* EXACT SCREENSHOT FONT */
-  font-weight: 600 !important;
-  color: #4b5563 !important;
-}
-
-.imm-admin-table th,
-.imm-admin-table td,
-.institutes-table th,
-.institutes-table td {
-  padding: 5px 8px !important;  /* PERFECT PADDING */
-  border-bottom: 1px solid #ececec !important;
-  text-align: left !important;
-  vertical-align: middle !important;  /* LIKE SCREENSHOT */
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  color: #e5e7eb;
 }
 
 .imm-admin-table th,
 .institutes-table th {
-  background: #f9fafb !important;  /* LIGHT GRAY LIKE SCREENSHOT */
-  font-weight: 700 !important;
-  color: #555 !important;
-  font-size: 0.74rem !important;
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  padding: 8px 10px;
+  font-weight: 700;
 }
 
-/* PERFECT STATUS BADGES LIKE SCREENSHOT */
-.imm-admin-status,
-.status-indicator {
-  padding: 4px 10px !important;  /* SCREENSHOT SIZE */
-  border-radius: 20px !important;  /* ROUNDED LIKE SCREENSHOT */
-  font-weight: 700 !important;
-  font-size: 0.75rem !important;
-  display: inline-block !important;
-  text-transform: capitalize;
+.imm-admin-table td,
+.institutes-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.35);
 }
 
-.imm-admin-status-active,
+/* =========================
+   STATUS BADGES
+========================= */
+
+.status-indicator,
+.imm-admin-status {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
 .status-indicator.active {
-  background: #10b981 !important;  /* GREEN LIKE SCREENSHOT */
-  color: white !important;
+  background: #10b981;
+  color: white;
 }
 
-.imm-admin-status-pending {
-  background: #fff3cd !important;
-  color: #856404 !important;
-}
-
-.imm-admin-status-inactive,
-.imm-admin-status-rejected,
 .status-indicator.inactive {
-  background: #f8d7da !important;
-  color: #721c24 !important;
+  background: #ef4444;
+  color: white;
 }
 
-/* BUTTONS - NORMAL SIZE LIKE SCREENSHOT */
-.imm-admin-edit-btn,
-.btn.edit-btn {
-  background: #5c71e7 !important;
-  color: white !important;
-  border: none !important;
-  padding: 6px 12px !important;  /* NORMAL SIZE */
-  border-radius: 6px !important;
-  font-size: 0.82rem !important;
-  cursor: pointer !important;
-  margin-right: 6px !important;
+/* =========================
+   BUTTONS
+========================= */
+
+button {
+  border: none;
+  cursor: pointer;
 }
 
-.imm-admin-delete-btn,
-.btn.delete-btn {
-  background: #f44336 !important;
-  color: white !important;
-  border: none !important;
-  padding: 6px 12px !important;
-  border-radius: 6px !important;
-  font-size: 0.82rem !important;
-  cursor: pointer !important;
+.imm-admin-add-btn,
+.imm-admin-submit-btn,
+.imm-admin-save-btn {
+  background: linear-gradient(135deg, #4f46e5, #2563eb);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: 600;
 }
 
-.imm-admin-table-wrapper {
-  overflow-x: auto;
-  margin-top: 12px;
-  width: 100%;
+.imm-admin-add-btn:hover {
+  transform: translateY(-1px);
 }
 
-/* RESPONSIVE - PERFECT MOBILE */
-@media (max-width: 768px) {
-  .imm-admin-page,
-  .institutes-table-section {
-    padding: 12px 4vw;
-  }
-  .imm-admin-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .imm-admin-search {
-    width: 100%;
-  }
-  .imm-admin-add-form {
-    flex-direction: column;
-  }
-  .imm-admin-input, 
-  .imm-admin-edit-input, 
-  .imm-admin-edit-select {
-    min-width: unset;
-  }
-  .imm-admin-table,
-  .institutes-table {
-    font-size: 0.72rem !important;
-  }
-  .imm-admin-table th,
-  .imm-admin-table td,
-  .institutes-table th,
-  .institutes-table td {
-    padding: 4px 6px !important;
-  }
+/* =========================
+   GLOBAL SAFETY NET
+========================= */
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #070b15;
 }

@@ -1,114 +1,133 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-// import "./AdminDashboard.css";
-
-const widgetsData = [
-  { title: "Total Institutes", icon: "ri-school-line", color: "#5c71e7", path: "institutes" },
-  { title: "Active Users", icon: "ri-team-line", color: "#f50057", path: "users" },
-  { title: "Immersion", icon: "ri-book-line", color: "#ff9800", path: "AdminImmersion" },
-  { title: "Pending Approvals", icon: "ri-time-line", color: "#009688", path: "notifications" },
-];
-
+import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
-  const [institutes, setInstitutes] = useState([]);
+
+  const [stats, setStats] = useState({
+    institutes: 0,
+    users: 0,
+    pendingApprovals: 0,
+    placements: 0,
+  });
 
   useEffect(() => {
-    const fetchInstitutes = async () => {
+    const fetchAdminStats = async () => {
       try {
-        const response = await axios.get("https://backenderp-production-6374.up.railway.app/api/admin/institutes");
-        setInstitutes(response.data);
+        const [institutesRes, usersRes, pendingRes, placementsRes] =
+          await Promise.all([
+            axios.get(
+              "https://backenderp-production-6374.up.railway.app/api/admin/institutes"
+            ),
+            axios.get(
+              "https://backenderp-production-6374.up.railway.app/api/admin/users"
+            ),
+            axios.get(
+              "https://backenderp-production-6374.up.railway.app/api/admin/pending"
+            ),
+            axios.get(
+              "https://backenderp-production-6374.up.railway.app/api/admin/placements?period=month"
+            ),
+          ]);
+
+        setStats({
+          institutes: institutesRes.data?.length || 0,
+          users: usersRes.data?.length || 0,
+          pendingApprovals: pendingRes.data?.total || 0,
+          placements: placementsRes.data?.count || 0,
+        });
       } catch (error) {
-        console.error("Error fetching institutes:", error);
-        setInstitutes([]);
+        console.error("Error fetching admin stats:", error);
       }
     };
-    fetchInstitutes();
+
+    fetchAdminStats();
   }, []);
 
-  const filteredInstitutes = institutes.filter(
-    (inst) =>
-      inst.name?.toLowerCase().includes(search.toLowerCase()) ||
-      inst.address?.toLowerCase().includes(search.toLowerCase()) ||
-      inst.status?.toLowerCase().includes(search.toLowerCase())
-  );
-const getWidgetIcon = (iconName) => {
-  return (
-    <i 
-      className={`ri ${iconName}`} 
-      style={{ fontSize: '1.8rem', color: 'white' }} 
-    />
-  );
-};
+  const adminCards = [
+    {
+      title: "Institutes Registered",
+      value: stats.institutes,
+      icon: "ri-school-line",
+      color: "#3b82f6",
+      path: "institutes",
+      helper: "Total onboarded institutes",
+    },
+    {
+      title: "Total Users",
+      value: stats.users,
+      icon: "ri-team-line",
+      color: "#22c55e",
+      path: "users",
+      helper: "Students, staff & admins",
+    },
+    {
+      title: "Pending Approvals",
+      value: stats.pendingApprovals,
+      icon: "ri-alert-line",
+      color: "#f59e0b",
+      path: "approvals",
+      helper: "Requires admin action",
+    },
+    {
+      title: "Placements This Month",
+      value: stats.placements,
+      icon: "ri-briefcase-line",
+      color: "#a855f7",
+      path: "Placements",
+      helper: "Approved placements",
+    },
+  ];
 
   return (
-    <main className="dashboard-content">
+    <div className="dashboard-page">
+      {/* Header */}
       <header className="dashboard-header">
-        <h1>Admin</h1>
-        <input
-          type="text"
-          placeholder="Search institutes..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="search-input"
-        />
+        <div className="dashboard-header-text">
+          <h1>Welcome back, Admin 👋</h1>
+          <p>
+            Here’s a real-time overview of system operations and performance
+          </p>
+        </div>
+
+        <div className="dashboard-header-actions">
+          <input
+            type="text"
+            placeholder="Search institutes, users, reports, or transactions..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="search-input"
+          />
+        </div>
       </header>
 
-      <section className="widgets-section">
-        {widgetsData.map((w) => (
+      {/* Admin KPI Cards */}
+      <section className="dashboard-cards">
+        {adminCards.map((card) => (
           <div
-            key={w.title}
-            className="widget-card"
-            style={{ borderTop: `4px solid ${w.color}`, cursor: 'pointer' }}
-            onClick={() => navigate(`/dashboard/admin/${w.path}`)}
+            key={card.title}
+            className="dashboard-card"
+            onClick={() => navigate(`/dashboard/admin/${card.path}`)}
           >
-            <div className="widget-icon" style={{ backgroundColor: w.color }}>
-                {getWidgetIcon(w.icon)}
+            <div
+              className="card-icon"
+              style={{ backgroundColor: card.color }}
+            >
+              <i className={`ri ${card.icon}`} />
             </div>
-            <div className="widget-info">
-              <p>{w.title}</p>
+
+            <div className="card-info">
+              <p className="card-title">{card.title}</p>
+              <h3 className="card-value">{card.value}</h3>
+              <span className="card-helper">{card.helper}</span>
             </div>
           </div>
         ))}
       </section>
-
-      <section className="institutes-table-section">
-        <h2>Institutes Overview</h2>
-        <table className="institutes-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Location</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredInstitutes.length ? (
-              filteredInstitutes.map((inst) => (
-                <tr key={inst.id}>
-                  <td>{inst.name}</td>
-                  <td>{inst.address}</td>
-                  <td colSpan="3" style={{ textAlign: "center", padding: "20px" }}>
-                    <span className={`status-indicator ${inst.status.toLowerCase()}`}>
-                      {inst.status}
-                    </span>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="4" style={{ textAlign: "center", padding: "20px" }}>
-                  No institutes found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </section>
-    </main>
+    </div>
   );
 };
 

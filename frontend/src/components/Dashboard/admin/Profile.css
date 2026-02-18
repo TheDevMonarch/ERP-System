@@ -1,0 +1,136 @@
+/* ===== PAGE ===== */
+.profile-page {
+  padding: 32px;
+  color: #e5e7eb;
+  background: radial-gradient(circle at top, #020617, #000814);
+}
+
+/* ===== HEADER ===== */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 26px;
+  border-radius: 18px;
+  background: linear-gradient(
+    135deg,
+    rgba(37, 99, 235, 0.25),
+    rgba(2, 6, 23, 0.95)
+  );
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+  margin-bottom: 32px;
+}
+
+.profile-avatar {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: #fff;
+  font-size: 30px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.2);
+}
+
+.profile-header-info h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #f9fafb;
+}
+
+.profile-header-info .role {
+  color: #93c5fd;
+  font-weight: 600;
+}
+
+.profile-header-info .email {
+  color: #c7d2fe;
+  font-size: 0.85rem;
+}
+
+/* ===== GRID ===== */
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px;
+}
+
+/* ===== CARD ===== */
+.admin-profile-card {
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.95),
+    rgba(2, 6, 23, 0.95)
+  );
+  border: 1px solid rgba(59, 130, 246, 0.18);
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-profile-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
+}
+
+.admin-profile-card h3 {
+  margin-bottom: 16px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #e0f2fe;
+}
+
+/* label → value */
+.admin-profile-card p {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  font-size: 0.9rem;
+  color: #e5e7eb;
+}
+
+.admin-profile-card p span {
+  color: #9ca3af;
+}
+
+/* ===== ACTIONS ===== */
+.admin-profile-card.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* buttons */
+.btn {
+  padding: 12px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+}
+
+.btn.secondary {
+  background: rgba(59, 130, 246, 0.2);
+  color: #e0f2fe;
+}
+
+.btn.secondary:hover {
+  background: rgba(59, 130, 246, 0.35);
+}
+
+.btn.danger {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.45);
+}
+
+.btn.danger:hover {
+  background: linear-gradient(135deg, #dc2626, #991b1b);
+}

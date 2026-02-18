@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate
+  Navigate,
 } from "react-router-dom";
 
 import Login from "./components/Login/Login";
@@ -14,15 +14,19 @@ import Admin from "./components/Dashboard/admin/admin";
 import UserDashboard from "./components/Dashboard/User/User";
 import InstituteDashboard from "./components/Dashboard/institute/institute";
 
+import Navbar from "./components/Navbar/Navbar";
+
 import "./App.css";
 
 function App() {
   const [user, setUser] = useState(null);
 
-  // ✅ CHANGE 1: Read user from localStorage on mount
+  // 🔧 TEMP DEV BYPASS
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user") || "null");
-    setUser(storedUser);
+    const dummyUser = {
+      role: "admin", // admin | user | institute
+    };
+    setUser(dummyUser);
   }, []);
 
   const RoleRoute = ({ role, element }) => {
@@ -30,42 +34,78 @@ function App() {
     return user.role === role ? element : <Navigate to="/" replace />;
   };
 
+  // ✅ DASHBOARD LAYOUT (Navbar + Page)
+  const DashboardLayout = ({ children }) => {
+    return (
+      <>
+        <Navbar />
+        {children}
+      </>
+    );
+  };
+
   return (
     <Router>
       <Routes>
-        {/* ✅ CHANGE 2: Use user.role directly to build dashboard path */}
+        {/* ================= AUTH ================= */}
         <Route
           path="/"
           element={
-            user
-              ? <Navigate to={`/dashboard/${user.role}`} replace />
-              : <Login />
+            user ? (
+              <Navigate to={`/dashboard/${user.role}`} replace />
+            ) : (
+              <Login />
+            )
           }
         />
 
-        {/* Auth Routes */}
-        
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
-        {/* Dashboards */}
+        {/* ================= DASHBOARDS ================= */}
         <Route
           path="/dashboard/admin/*"
-          element={<RoleRoute role="admin" element={<Admin />} />}
+          element={
+            <RoleRoute
+              role="admin"
+              element={
+                <DashboardLayout>
+                  <Admin />
+                </DashboardLayout>
+              }
+            />
+          }
         />
 
         <Route
           path="/dashboard/institute/*"
-          element={<RoleRoute role="institute" element={<InstituteDashboard />} />}
+          element={
+            <RoleRoute
+              role="institute"
+              element={
+                <DashboardLayout>
+                  <InstituteDashboard />
+                </DashboardLayout>
+              }
+            />
+          }
         />
 
         <Route
           path="/dashboard/user/*"
-          // element={<RoleRoute role="user" element={<UserDashboard />} />}
-          element={<UserDashboard />}
+          element={
+            <RoleRoute
+              role="user"
+              element={
+                <DashboardLayout>
+                  <UserDashboard />
+                </DashboardLayout>
+              }
+            />
+          }
         />
 
-        {/* Fallback */}
+        {/* ================= FALLBACK ================= */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
